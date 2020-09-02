@@ -1,0 +1,32 @@
+---
+- name: Test the update_ticket plugin
+  hosts: localhost
+  gather_facts: false
+  force_handlers: true
+  become: false
+  roles:
+    - mss_ticket_services
+  tasks:
+  - set_fact:
+      OPSTT: SOCY00701788983
+    
+  - name: Update new OPS:Trouble Ticket private worklog
+    update_ticket:
+      id: "{{ OPSTT }}"
+      description: |
+        remedy entry test1
+        remedy entry test2\n
+        remedy entry test3
+      publicWorklog: |
+        remedy entry public1
+        remedy entry public2\n
+        remedy entry public3
+      privateWorklog: |
+        remedy entry private1
+        remedy entry private2\n
+        remedy entry private3
+      issueDescription: INT-Compliance Health Checking
+      ticketPendingUpon: Customer
+      status: PENDING
+      queue: Dynamic Automation
+      partnerTicketId: fakeTicketId
